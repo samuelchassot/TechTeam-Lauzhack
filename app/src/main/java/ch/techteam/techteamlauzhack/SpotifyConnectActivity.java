@@ -20,7 +20,6 @@ public class SpotifyConnectActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "3dd8d94d7032410db6a52b0c51c09c67";
     private static final String REDIRECT_URI = "ch.techteam.techteamlauzhack://callback";
-    private SpotifyAppRemote mSpotifyAppRemote;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +39,7 @@ public class SpotifyConnectActivity extends AppCompatActivity {
                 new Connector.ConnectionListener() {
 
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
+                        SpotifySingleton.putAppRemote(spotifyAppRemote);
                         Log.d("SpotifyConnectActivity", "Connected! Yay!");
 
                         // Now you can start interacting with App Remote
