@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void updateFields(){
-        DecimalFormat numberFormat = new DecimalFormat("#.00");
+        DecimalFormat numberFormat = new DecimalFormat("#0.00");
         ((TextView)findViewById(R.id.textview_main_distance)).setText(numberFormat.format(totalDistance) + " km");
         ((TextView)findViewById(R.id.textview_main_slope)).setText(numberFormat.format(slope) + " %");
         ((TextView)findViewById(R.id.textview_main_livespeed)).setText(numberFormat.format(speed) + " km/h");
