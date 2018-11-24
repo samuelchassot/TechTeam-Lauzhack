@@ -12,6 +12,12 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+    private StateMode stateMode_;
+    private RunningMode runningMode_;
+    private float meanHeartRate_;
+    private float slowIntervalTime;
+    private float fastIntervalTime;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
