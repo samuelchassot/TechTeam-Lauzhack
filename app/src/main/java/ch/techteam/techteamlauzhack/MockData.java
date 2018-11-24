@@ -45,19 +45,28 @@ public class MockData extends Observable {
     }
 
     public void run(){
-        while(true) {
-            if(!update()){
-                break;
-            }
-            setChanged();
-            notifyObservers();
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        Runnable restartTry = new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (!update()) {
+                        break;
+                    }
+                    setChanged();
+                    notifyObservers();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        Log.e("Thread sleep", "error occured");
+                    }
+
+                }
             }
-        }
+        };
+        new Thread(restartTry, "mock").start();
+
+
     }
 
     private boolean update(){
