@@ -1,5 +1,5 @@
 package ch.techteam.techteamlauzhack;
 
 public enum StateMode {
-    FOCUS, RUN, RECOVERY
+    WARMUP, RUN, RECOVERY
 }
