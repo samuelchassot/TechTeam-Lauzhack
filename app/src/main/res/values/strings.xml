@@ -7,4 +7,6 @@
     <string name="main_initial_heartrate">0 bpm</string>
     <string name="main_intial_distance">0.0 km</string>
     <string name="home_start">Start</string>
+    <string name="main_initial_averagespeed">0.0 km/h</string>
+    <string name="main_initial_slope">0 m</string>
 </resources>
