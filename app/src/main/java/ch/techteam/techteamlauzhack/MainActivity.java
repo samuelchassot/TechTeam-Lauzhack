@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("MAIN", "Cannot retrieve warmup playlist");
+                        Log.e("MAIN", "Cannot retrieve playlist");
 
                     }
                 })
@@ -158,5 +158,37 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue_.add(request);
+    }
+
+    private void playSong(List<String> songsID){
+        // Request a string response from the provided URL.
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, PLAYLIST_URL + "playlists/0tWjZRwhX09MRKWBMAr57q/tracks", null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("MAIN", "Received playlist");
+                        jsonPlaylist_ = response;
+                        Log.e("MAIN", response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("MAIN", "Cannot retrieve playlist");
+
+                    }
+                })
+
+        {
+            /** Passing some request headers* */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
+                return headers;
+            }
+        };
     }
 }
