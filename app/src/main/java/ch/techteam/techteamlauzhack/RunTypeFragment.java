@@ -44,8 +44,6 @@ public class RunTypeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_run_type, container, false);
-        //TextView textView_run_type = (TextView) view.findViewById(R.id.text_view_home_run_type);
-        //textView_run_type.setText(title);
         Button b = view.findViewById(R.id.button_home_run);
         b.setText(title);
         b.setOnClickListener(new View.OnClickListener() {
