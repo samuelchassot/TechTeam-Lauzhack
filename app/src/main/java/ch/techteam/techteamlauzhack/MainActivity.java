@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("uris", "spotify:track:6HoqS6yequspDHKXrqw42N");
+                params.put("uris", "[\"spotify:track:6HoqS6yequspDHKXrqw42N\"]");
                 return params;
             }
         };
