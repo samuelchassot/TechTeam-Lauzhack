@@ -25,7 +25,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/main_initial_heartrate"
-            app:layout_constraintBottom_toTopOf="@+id/textview_main_averagespeed"
+            app:layout_constraintBottom_toTopOf="@+id/textview_main_livespeed"
+            android:gravity="center"
             app:layout_constraintEnd_toStartOf="@+id/textview_main_distance"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +41,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
             android:text="@string/main_intial_distance"
+            android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/textview_main_slope"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -47,13 +49,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textview_main_averagespeed"
+            android:id="@+id/textview_main_livespeed"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/main_initial_averagespeed"
+            android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/textView_main_spotify"
             app:layout_constraintEnd_toStartOf="@+id/textview_main_slope"
             app:layout_constraintHorizontal_bias="0.5"
@@ -69,11 +72,12 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
+            android:gravity="center"
             android:text="@string/main_initial_slope"
             app:layout_constraintBottom_toTopOf="@+id/textView_main_spotify"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textview_main_averagespeed"
+            app:layout_constraintStart_toEndOf="@+id/textview_main_livespeed"
             app:layout_constraintTop_toBottomOf="@+id/textview_main_distance" />
 
         <TextView
@@ -85,9 +89,10 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
             android:text="TextView"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_main_averagespeed" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_main_livespeed" />
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
