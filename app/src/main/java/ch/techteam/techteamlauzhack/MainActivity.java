@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(JSONObject response) {
-                    //mTextView.setText("Response: " + response.toString());
                     Log.e("MAIN", "Received playlist");
                 }
                 },
@@ -146,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public Map getHeaders() throws AuthFailureError {
                 HashMap headers = new HashMap();
-                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
                 return headers;
             }
         };
