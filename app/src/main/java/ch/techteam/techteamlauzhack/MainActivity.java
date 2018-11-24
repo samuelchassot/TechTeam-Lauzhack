@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -68,24 +69,39 @@ public class MainActivity extends AppCompatActivity {
         queue_ = Volley.newRequestQueue(this);
 
         stateMode_ = StateMode.WARMUP;
-        playlistDependingOnStateMode();
+        Button state = findViewById(R.id.button_main);
+
+        state.setText("End warm up");
+        state.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (stateMode_){
+                    case WARMUP:
+                        stateMode_ = StateMode.RUN;
+                        ((Button)v.findViewById(R.id.button_main)).setText("End run");
+                        playlistDependingOnRunningMode();
+                        break;
+                    case RUN:
+                        stateMode_ = StateMode.RECOVERY;
+                        ((Button)v.findViewById(R.id.button_main)).setText("End recovery");
+                        playlistRecovery();
+                        break;
+                    case RECOVERY:
+                        Intent homeIntent = new Intent(v.getContext(), HomeActivity.class);
+                        startActivity(homeIntent);
+                        break;
+                }
+            }
+        });
+
+        playlistWarmup();
+    }
+
+    private void playlistRecovery(){
 
     }
 
-    private void playlistDependingOnStateMode(){
-        switch (stateMode_){
-            case WARMUP:
-                playlistWarmup();
-                break;
-            case RUN:
-                playlistDependingOnRunningMode();
-                break;
-            case RECOVERY:
-                break;
-            default:
-                Log.e("MAINACTIVITY", "NO STATE MODE");
-        }
-    }
+
 
     private void playlistDependingOnRunningMode(){
         switch (runningMode_){
