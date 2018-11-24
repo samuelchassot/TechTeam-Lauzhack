@@ -6,4 +6,5 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="main_initial_heartrate">0 bpm</string>
     <string name="main_intial_distance">0.0 km</string>
+    <string name="home_start">Start</string>
 </resources>
