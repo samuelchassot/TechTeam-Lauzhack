@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#999999"
     tools:context=".MainActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -20,30 +20,50 @@
             android:id="@+id/textview_main_heartrate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginTop="72dp"
             android:text="@string/main_initial_heartrate"
             app:layout_constraintEnd_toStartOf="@+id/textview_main_distance"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="90dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textview_main_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="72dp"
             android:text="@string/main_intial_distance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textview_main_heartrate"
-            tools:layout_editor_absoluteY="90dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textview_main_averagespeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="93dp"
-            tools:layout_editor_absoluteY="176dp" />
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/main_initial_averagespeed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textview_main_slope"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_main_heartrate"
+            app:layout_constraintVertical_bias="0.225" />
+
+        <TextView
+            android:id="@+id/textview_main_slope"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/main_initial_slope"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textview_main_averagespeed"
+            app:layout_constraintTop_toBottomOf="@+id/textview_main_distance"
+            app:layout_constraintVertical_bias="0.225" />
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
