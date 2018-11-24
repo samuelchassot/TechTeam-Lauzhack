@@ -109,6 +109,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         playlistWarmup();
 
+        Log.e("MAIN", "BEFORE MOCK DATA");
+        //mockdata = new MockData(this);
+        Log.e("MAIN", "AFTER 1 MOCK DATA");
+        //mockdata.addObserver(this);
+        Log.e("MAIN", "AFTER 2 MOCK DATA");
+        //mockdata.run();
+        Log.e("MAIN", "AFTER 3 MOCK DATA");
+
+
     }
 
     private void playlistRecovery(){
@@ -134,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void playlistWarmup(){
         playSong(new ArrayList<String>());
-
 
     }
 
