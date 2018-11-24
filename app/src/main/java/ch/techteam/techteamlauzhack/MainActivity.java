@@ -26,9 +26,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Observer {
 
     private final static String PLAYLIST_URL = "https://api.spotify.com/v1/";
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private double distance_;
     private RequestQueue queue_;
     private List<String> playlist_;
+    private MockData mockdata;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +97,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mockdata = new MockData(this);
+        mockdata.addObserver(this);
+        mockdata.run();
+
         playlistWarmup();
+
     }
 
     private void playlistRecovery(){
@@ -153,5 +161,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue_.add(request);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        MockData m = (MockData) o;
+        Log.i("mainMockData", "heartbeat = " + m.getHeartBeat());
     }
 }
