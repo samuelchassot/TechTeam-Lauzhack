@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,10 +107,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
             }
         });
 
-        mockdata = new MockData(this);
-        mockdata.addObserver(this);
-        mockdata.run();
-
         playlistWarmup();
 
     }
@@ -136,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void playlistWarmup(){
+        playSong(new ArrayList<String>());
 
 
     }
@@ -194,34 +192,40 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void playSong(List<String> songsID){
-        // Request a string response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, PLAYLIST_URL + "playlists/0tWjZRwhX09MRKWBMAr57q/tracks", null,
-                new Response.Listener<JSONObject>() {
-
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, PLAYLIST_URL + "me/player/play",
+            new Response.Listener<String>(){
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Log.e("MAIN", "Received playlist");
-                        jsonPlaylist_ = response;
-                        Log.e("MAIN", response.toString());
+                    public void onResponse(String response) {
+                        // response
+                        Log.e("MAINMONTRUC", "Plays song :" +response.toString());
                     }
                 },
-                new Response.ErrorListener() {
-
+            new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("MAIN", "Cannot retrieve playlist");
-
+                        // error
+                        Log.e("MAINMONTRUC", "Cannot play song : " + error.toString());
                     }
-                })
+                }
+        ) {
 
-        {
             /** Passing some request headers* */
             @Override
-            public Map getHeaders() throws AuthFailureError {
-                HashMap headers = new HashMap();
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap();
                 headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
                 return headers;
             }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("uris", "[\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\", \"spotify:track:1301WleyT98MSxVHPZCA6M\"]");
+                return params;
+            }
         };
+
+        queue_.add(putRequest);
+
     }
 }
