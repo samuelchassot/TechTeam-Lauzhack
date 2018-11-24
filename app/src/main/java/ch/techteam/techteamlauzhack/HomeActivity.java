@@ -25,8 +25,4 @@ public class HomeActivity extends AppCompatActivity {
         home_view_pager.setAdapter(home_adapter);
     }
 
-    //todo
-    /*public void run_settings(View v) {
-        //todo
-    }*/
 }

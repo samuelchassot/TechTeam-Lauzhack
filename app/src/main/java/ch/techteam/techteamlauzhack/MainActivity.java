@@ -1,6 +1,7 @@
 package ch.techteam.techteamlauzhack;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,8 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private StateMode stateMode_;
     private RunningMode runningMode_;
     private float meanHeartRate_;
-    private float slowIntervalTime_;
-    private float fastIntervalTime_;
+    private int slowIntervalTime_;
+    private int fastIntervalTime_;
+    private int time_;
+    private double distance_;
     private RequestQueue queue_;
     private List<String> playlist_;
 
@@ -42,6 +45,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_activity_main);
+
+        Intent intent = getIntent();
+        runningMode_ = (RunningMode) intent.getSerializableExtra("mode");
+
+        switch (runningMode_){
+            case RUN_TIME:
+                time_ = intent.getIntExtra("time", 1800);
+                break;
+            case RUN_DISTANCE:
+                distance_ = intent.getDoubleExtra("distance", 5.0);
+                break;
+            case WALK:
+                time_ = intent.getIntExtra("time", 1800);
+                break;
+            case INTERVAL:
+                slowIntervalTime_ = intent.getIntExtra("slowIntervalTime", 240);
+                fastIntervalTime_ = intent.getIntExtra("fastIntervalTime", 600);
+                break;
+        }
 
         queue_ = Volley.newRequestQueue(this);
 
