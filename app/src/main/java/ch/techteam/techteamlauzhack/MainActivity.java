@@ -10,19 +10,25 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String PLAYLIST_URL = "http://www.google.com";
+    private final static String PLAYLIST_URL = "https://api.spotify.com/v1/";
 
     private StateMode stateMode_;
     private RunningMode runningMode_;
@@ -38,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.layout_activity_main);
 
         queue_ = Volley.newRequestQueue(this);
+
+        stateMode_ = StateMode.WARMUP;
+        playlistDependingOnStateMode();
 
     }
 
@@ -72,23 +81,37 @@ public class MainActivity extends AppCompatActivity {
     private void playlistWarmup(){
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, PLAYLIST_URL,
-            new Response.Listener<String>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, PLAYLIST_URL + "playlists/37i9dQZF1DX3PIAZMcbo2T/tracks", null,
+            new Response.Listener<JSONObject>() {
+
                 @Override
-                public void onResponse(String response) {
-                    // Display the first 500 characters of the response string.
-                    //mTextView.setText("Response is: "+ response.substring(0,500));
-                    
+                public void onResponse(JSONObject response) {
+                    //mTextView.setText("Response: " + response.toString());
+                    Log.e("MAIN", "Received playlist");
                 }
-            },
+                },
             new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("MAIN", "Cannot retrieve warmup playlist");
+
+                }
+        })
+
+
+        {
+
+            /** Passing some request headers* */
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("MAIN", "Cannot retrieve warmup playlist");
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Content-Type", "application/json");
+                return headers;
             }
-        });
+        };
 
         // Add the request to the RequestQueue.
-        queue_.add(stringRequest);
+        queue_.add(request);
     }
 }
