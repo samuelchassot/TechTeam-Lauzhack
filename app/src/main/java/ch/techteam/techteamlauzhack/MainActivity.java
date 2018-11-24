@@ -24,10 +24,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-<<<<<<< Updated upstream
 import java.text.DecimalFormat;
-=======
->>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,16 +107,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
             }
         });
 
+
+        mockdata = new MockData(this);
+        mockdata.addObserver(this);
+        mockdata.run();
+
         playlistWarmup();
-
-        Log.e("MAIN", "BEFORE MOCK DATA");
-        //mockdata = new MockData(this);
-        Log.e("MAIN", "AFTER 1 MOCK DATA");
-        //mockdata.addObserver(this);
-        Log.e("MAIN", "AFTER 2 MOCK DATA");
-        //mockdata.run();
-        Log.e("MAIN", "AFTER 3 MOCK DATA");
-
 
     }
 
@@ -194,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         updateFields();
     }
 
-<<<<<<< Updated upstream
     private void updateFields(){
         DecimalFormat numberFormat = new DecimalFormat("#.00");
         ((TextView)findViewById(R.id.textview_main_distance)).setText(numberFormat.format(totalDistance) + " km");
@@ -203,8 +195,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         ((TextView)findViewById(R.id.textview_main_heartrate)).setText(heartRate + " bpm");
     }
 
-=======
->>>>>>> Stashed changes
     private void playSong(List<String> songsID){
         StringRequest putRequest = new StringRequest(Request.Method.PUT, PLAYLIST_URL + "me/player/play",
             new Response.Listener<String>(){
@@ -231,12 +221,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 return headers;
             }
 
-            @Override
+            /*@Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("uris", "[\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\", \"spotify:track:1301WleyT98MSxVHPZCA6M\"]");
                 return params;
-            }
+            }*/
         };
 
         queue_.add(putRequest);
