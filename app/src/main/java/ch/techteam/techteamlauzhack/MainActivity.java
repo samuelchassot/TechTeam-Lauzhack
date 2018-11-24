@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -23,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private StateMode stateMode_;
     private RunningMode runningMode_;
-    private float meanHeartRate_;
+
+    private int heartRate;
+    private double totalDistance;
+    private double slope;
+    private double speed;
+
     private int slowIntervalTime_;
     private int fastIntervalTime_;
     private int time_;
@@ -171,7 +178,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         MockData m = (MockData) o;
-        Log.i("mainMockData", "heartbeat = " + m.getHeartBeat());
+        heartRate = m.getHeartBeat();
+        slope = m.getLiveSlope();
+        speed = m.getLiveSpeed();
+        totalDistance = m.getTotalDistance();
+        updateFields();
+    }
+
+    private void updateFields(){
+        DecimalFormat numberFormat = new DecimalFormat("#.00");
+        ((TextView)findViewById(R.id.textview_main_distance)).setText(numberFormat.format(totalDistance) + " km");
+        ((TextView)findViewById(R.id.textview_main_slope)).setText(numberFormat.format(slope) + " %");
+        ((TextView)findViewById(R.id.textview_main_livespeed)).setText(numberFormat.format(speed) + " km/h");
+        ((TextView)findViewById(R.id.textview_main_heartrate)).setText(heartRate + " bpm");
     }
 
     private void playSong(List<String> songsID){

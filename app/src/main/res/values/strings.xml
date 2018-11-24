@@ -4,9 +4,9 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="main_initial_heartrate">0 bpm</string>
-    <string name="main_intial_distance">0.0 km</string>
+    <string name="main_initial_heartrate">--- bpm</string>
+    <string name="main_intial_distance">-.-- km</string>
     <string name="home_start">Start</string>
-    <string name="main_initial_averagespeed">0.0 km/h</string>
-    <string name="main_initial_slope">0 m</string>
+    <string name="main_initial_averagespeed">-.-- km/h</string>
+    <string name="main_initial_slope">-.-- %</string>
 </resources>
