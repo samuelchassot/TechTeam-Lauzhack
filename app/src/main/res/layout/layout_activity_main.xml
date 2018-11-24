@@ -53,7 +53,6 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:text="@string/main_initial_averagespeed"
             app:layout_constraintBottom_toTopOf="@+id/textView_main_spotify"
             app:layout_constraintEnd_toStartOf="@+id/textview_main_slope"
