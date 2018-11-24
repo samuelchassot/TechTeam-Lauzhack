@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private double distance_;
     private RequestQueue queue_;
     private List<String> playlist_;
+    private JSONObject jsonPlaylist_;
     private MockData mockdata;
 
     @Override
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
 
         queue_ = Volley.newRequestQueue(this);
+        requestPlaylist();
 
         stateMode_ = StateMode.WARMUP;
         Button state = findViewById(R.id.button_main);
@@ -128,33 +130,36 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void playlistWarmup(){
 
+
+    }
+
+    private void requestPlaylist(){
         // Request a string response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, PLAYLIST_URL + "playlists/37i9dQZF1DX3PIAZMcbo2T/tracks", null,
-            new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, PLAYLIST_URL + "playlists/0tWjZRwhX09MRKWBMAr5Zq/tracks", null,
+                new Response.Listener<JSONObject>() {
 
-                @Override
-                public void onResponse(JSONObject response) {
-                    //mTextView.setText("Response: " + response.toString());
-                    Log.e("MAIN", "Received playlist");
-                }
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("MAIN", "Received playlist");
+                        jsonPlaylist_ = response;
+                        Log.e("MAIN", response.toString());
+                    }
                 },
-            new Response.ErrorListener() {
+                new Response.ErrorListener() {
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("MAIN", "Cannot retrieve warmup playlist");
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("MAIN", "Cannot retrieve playlist");
 
-                }
-        })
-
+                    }
+                })
 
         {
-
             /** Passing some request headers* */
             @Override
             public Map getHeaders() throws AuthFailureError {
                 HashMap headers = new HashMap();
-                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
                 return headers;
             }
         };
@@ -167,5 +172,37 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void update(Observable o, Object arg) {
         MockData m = (MockData) o;
         Log.i("mainMockData", "heartbeat = " + m.getHeartBeat());
+    }
+
+    private void playSong(List<String> songsID){
+        // Request a string response from the provided URL.
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, PLAYLIST_URL + "playlists/0tWjZRwhX09MRKWBMAr57q/tracks", null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("MAIN", "Received playlist");
+                        jsonPlaylist_ = response;
+                        Log.e("MAIN", response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("MAIN", "Cannot retrieve playlist");
+
+                    }
+                })
+
+        {
+            /** Passing some request headers* */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
+                return headers;
+            }
+        };
     }
 }
