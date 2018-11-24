@@ -1,5 +1,6 @@
 package ch.techteam.techteamlauzhack;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Bundle;
@@ -55,12 +56,16 @@ public class SpotifyConnectActivity extends AppCompatActivity {
                 });
     }
 
-    @Override
+    //TODO put at the end of the app
+    /*@Override
     protected void onStop() {
         super.onStop();
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
-    }
+    }*/
 
-    private void connected() {}
+    private void connected() {
+        Intent homeIntent = new Intent(this, HomeActivity.class);
+        startActivity(homeIntent);
+    }
 
 }
