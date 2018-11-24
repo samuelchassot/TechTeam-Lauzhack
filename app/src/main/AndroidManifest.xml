@@ -13,7 +13,8 @@
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_main"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".HomeActivity"></activity>
     </application>
 
 </manifest>
