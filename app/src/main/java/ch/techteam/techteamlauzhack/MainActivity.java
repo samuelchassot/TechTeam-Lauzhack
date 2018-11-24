@@ -69,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
         switch (runningMode_){
             case WALK:
                 break;
-            case RUN:
+            case RUN_DISTANCE:
+                break;
+            case RUN_TIME:
                 break;
             case INTERVAL:
                 break;

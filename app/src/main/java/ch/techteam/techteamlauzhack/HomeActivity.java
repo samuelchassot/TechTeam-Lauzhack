@@ -11,7 +11,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    List<String> run_types = new ArrayList<String>(Arrays.asList("Run Distance", "Run Time", "Intervals", "Walk"));
+    //List<String> run_types = new ArrayList<String>(Arrays.asList("Run Distance", "Run Time", "Intervals", "Walk"));
     HomeAdapter home_adapter;
     ViewPager home_view_pager;
 
@@ -20,13 +20,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        home_adapter = new HomeAdapter(getSupportFragmentManager(), run_types);
+        home_adapter = new HomeAdapter(getSupportFragmentManager());
         home_view_pager = (ViewPager) findViewById(R.id.viewPager_home_run_types);
         home_view_pager.setAdapter(home_adapter);
     }
 
     //todo
-    public void run_settings(View v) {
+    /*public void run_settings(View v) {
         //todo
-    }
+    }*/
 }
