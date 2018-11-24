@@ -127,13 +127,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void requestPlaylist(){
         // Request a string response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, PLAYLIST_URL + "playlists/0tWjZRwhX09MRKWBMAr57q/tracks", null,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, PLAYLIST_URL + "playlists/0tWjZRwhX09MRKWBMAr5Zq/tracks", null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.e("MAIN", "Received playlist");
                         jsonPlaylist_ = response;
+                        Log.e("MAIN", response.toString());
                     }
                 },
                 new Response.ErrorListener() {
