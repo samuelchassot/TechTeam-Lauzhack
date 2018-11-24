@@ -24,7 +24,10 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+<<<<<<< Updated upstream
 import java.text.DecimalFormat;
+=======
+>>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -191,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         updateFields();
     }
 
+<<<<<<< Updated upstream
     private void updateFields(){
         DecimalFormat numberFormat = new DecimalFormat("#.00");
         ((TextView)findViewById(R.id.textview_main_distance)).setText(numberFormat.format(totalDistance) + " km");
@@ -199,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
         ((TextView)findViewById(R.id.textview_main_heartrate)).setText(heartRate + " bpm");
     }
 
+=======
+>>>>>>> Stashed changes
     private void playSong(List<String> songsID){
         StringRequest putRequest = new StringRequest(Request.Method.PUT, PLAYLIST_URL + "me/player/play",
             new Response.Listener<String>(){
