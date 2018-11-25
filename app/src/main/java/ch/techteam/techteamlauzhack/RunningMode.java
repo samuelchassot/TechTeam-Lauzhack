@@ -1,7 +1,7 @@
 package ch.techteam.techteamlauzhack;
 
 public enum RunningMode {
-    RUN_DISTANCE("Run Distance"), RUN_TIME("Run Time"), INTERVAL("Intervals"), WALK("Walk");
+    RUN_DISTANCE("Run Distance"), RUN_TIME("Run Time"), INTERVAL("Run Intervals"), WALK("Walk");
 
     private String title;
 

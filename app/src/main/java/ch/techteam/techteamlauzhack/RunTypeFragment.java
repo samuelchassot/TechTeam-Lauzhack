@@ -67,7 +67,7 @@ public class RunTypeFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.button_home_start).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_home_run).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 intent.putExtra("mode", mode);
