@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 break;
             case RUN_DISTANCE:
                 timer_ = new Timer();
-                timer_.schedule(new CheckDistanceTimer(),10000);
+                timer_.schedule(new CheckDistanceTimer(),5000);
                 break;
             case RUN_TIME:
                 timer_ = new Timer();
