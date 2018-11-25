@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -226,15 +227,23 @@ public class MainActivity extends AppCompatActivity implements Observer {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap();
+                //headers.put("Content-Type", "application/json");
                 headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
                 return headers;
             }
 
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("uris", "[\"spotify:track:6HoqS6yequspDHKXrqw42N\"]");
-                return params;
+            public byte[] getBody(){
+                try {
+                    JSONObject jsonObject = new JSONObject("{\"uris\": [\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\", \"spotify:track:1301WleyT98MSxVHPZCA6M\"]}");
+                    Log.i("json", jsonObject.toString());
+                    return jsonObject.toString().getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return null;
             }
         };
 
@@ -329,7 +338,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.e("MAIN", "Received analysis");
                             try {
                                 JSONObject track = response.getJSONObject("track");
                                 playlistBPM_.put(s, track.getDouble("tempo"));
@@ -354,7 +362,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 public Map getHeaders() throws AuthFailureError {
                     HashMap headers = new HashMap();
                     headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
-                    Log.e("TOKEN", SpotifySingleton.get().getAccessToken());
                     return headers;
                 }
             };
