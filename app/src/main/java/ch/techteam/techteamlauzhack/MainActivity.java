@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private IntervalMode intervalMode_;
 
     private int heartRate;
+    private HeartStage heartStage;
     private double totalDistance;
     private double slope;
     private double speed;
@@ -106,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         });
 
         getSupportActionBar().hide();
+
+        heartStage = new HeartStage(0);
+        heartStage.addObserver(this);
 
         mockdata = new MockData(this);
         mockdata.addObserver(this);
@@ -443,14 +448,36 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     /**-----------OBSERVABLE-----------*/
 
-    @Override
-    public void update(Observable o, Object arg) {
-        MockData m = (MockData) o;
+
+    public void update(MockData m, Object arg) {
         heartRate = m.getHeartBeat();
         slope = m.getLiveSlope();
         speed = m.getLiveSpeed();
         totalDistance = m.getTotalDistance();
         updateFields();
+    }
+
+    public void update(HeartStage h, Object arg){
+        HeartStage.Stage curr = h.getCurrentStage();
+        if(curr == HeartStage.Stage.High){
+            playlistBounded(170, Integer.MAX_VALUE);
+        }
+        if(curr == HeartStage.Stage.Middle){
+            playlistBounded(130, 170);
+        }
+        if(curr == HeartStage.Stage.Low){
+            playlistBoundef(110,150);
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg){
+        try{
+            Method update = getClass().getMethod(String.valueOf(o.getClass()), Object.class);
+            update.invoke(this, o, arg);
+        } catch(Exception e) {
+            // log exception
+        }
     }
 
     private void updateFields(){
