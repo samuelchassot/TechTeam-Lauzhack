@@ -203,11 +203,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void playlistIntervalFast(){
-
+        playlistBounded(160, Integer.MAX_VALUE);
     }
 
     private void playlistIntervalSlow(){
-
+        playlistBounded(110, 160);
     }
 
     private void playlistBounded(final int min, final int max){
@@ -251,7 +251,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     /**-----------CONTROL PLAYER-----------*/
 
-    //TODO !!!!!!!!!!!
     private void playSong(List<Map.Entry<String, Double>> songsID){
         displaySong();
         String jsonUris = "{\"uris\":[";
@@ -409,6 +408,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 goToNextMode(this.getWindow().getDecorView());
                 break;
             case INTERVAL:
+                goToNextMode(this.getWindow().getDecorView());
                 break;
             default:
                 Log.e("MAINACTIVITY", "NO RUNNING MODE");
@@ -571,7 +571,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void update(HeartStage h, Object arg){
-        if(stateMode_ == StateMode.RUN) {
+        if(stateMode_ == StateMode.RUN && runningMode_ != RunningMode.INTERVAL) {
             Log.e("HEART_STAGE_UPDATE", "bonjour");
             HeartStage.Stage curr = h.getCurrentStage();
             if (curr == HeartStage.Stage.High) {
