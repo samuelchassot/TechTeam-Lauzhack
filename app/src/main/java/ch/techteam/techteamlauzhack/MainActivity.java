@@ -515,6 +515,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void update(MockData m, Object arg) {
         heartRate = m.getHeartBeat();
+        heartStage.update(heartRate);
         slope = m.getLiveSlope();
         speed = m.getLiveSpeed();
         totalDistance = m.getTotalDistance();
