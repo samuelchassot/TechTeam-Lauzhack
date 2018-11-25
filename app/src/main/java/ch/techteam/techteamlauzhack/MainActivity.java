@@ -128,14 +128,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 timer_.cancel();
                 stateMode_ = StateMode.RUN;
                 ((Button)v.findViewById(R.id.button_main)).setText("End run");
-                stopSong();
+                //stopSong();
                 playlistDependingOnRunningMode();
                 break;
             case RUN:
                 timer_.cancel();
                 stateMode_ = StateMode.RECOVERY;
                 ((Button)v.findViewById(R.id.button_main)).setText("End recovery");
-                stopSong();
+                //stopSong();
                 playlistRecovery();
                 break;
             case RECOVERY:
@@ -164,11 +164,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         timer_.schedule(new NextModeTimer(), 45000);
         mockdata.run();
+        update(heartStage, null);
         playSong(map);
 
     }
 
     private void playlistDependingOnRunningMode(){
+        update(heartStage, null);
         switch (runningMode_){
             case WALK:
                 timer_ = new Timer();
@@ -211,14 +213,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             }
         });
 
-        Collections.sort(map
-                , new Comparator<Map.Entry<String,Double>>() {
-                    @Override
-                    public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
-                        return Double.compare(o2.getValue(), o1.getValue());
-                    }
-
-                });
+        Collections.shuffle(map);
 
         playSong(map);
     }
@@ -522,18 +517,23 @@ public class MainActivity extends AppCompatActivity implements Observer {
         speed = m.getLiveSpeed();
         totalDistance = m.getTotalDistance();
         updateFields();
+        //update(heartStage, arg);
     }
 
     public void update(HeartStage h, Object arg){
         if(stateMode_ == StateMode.RUN) {
+            Log.e("HEART_STAGE_UPDATE", "bonjour");
             HeartStage.Stage curr = h.getCurrentStage();
             if (curr == HeartStage.Stage.High) {
+                Log.e("UPDATE", "HIGH");
                 playlistBounded(170, Integer.MAX_VALUE);
             }
             if (curr == HeartStage.Stage.Middle) {
+                Log.e("UPDATE", "MIDDLE");
                 playlistBounded(130, 170);
             }
             if (curr == HeartStage.Stage.Low) {
+                Log.e("UPDATE", "LOW");
                 playlistBounded(110, 150);
             }
         }
@@ -541,11 +541,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg){
-        try{
-            Method update = getClass().getMethod(String.valueOf(o.getClass()), Object.class);
-            update.invoke(this, o, arg);
-        } catch(Exception e) {
-            // log exception
+        if(o instanceof HeartStage){
+            Log.e("UPDATE", "HEARTSTAGE");
+            update((HeartStage)o, arg);
+        }
+        if(o instanceof MockData){
+            update((MockData) o, arg);
         }
     }
 
