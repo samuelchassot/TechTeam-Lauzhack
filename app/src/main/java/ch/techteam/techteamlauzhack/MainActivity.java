@@ -26,7 +26,11 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private double distance_;
     private RequestQueue queue_;
     private List<String> playlist_;
+    private Map<String, Integer> playlistBPM_;
     private JSONObject jsonPlaylist_;
     private MockData mockdata;
 
@@ -117,7 +122,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void playlistRecovery(){
+        Collections.sort(new LinkedList<>(playlistBPM_.entrySet()), new Comparator<Map.Entry<String,Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return Integer.compare(o2.getValue(), o1.getValue());
+            }
 
+        });
     }
 
 
@@ -138,7 +149,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void playlistWarmup(){
-        playSong(new ArrayList<String>());
+        //playSong(new ArrayList<String>());
+        Collections.sort(new LinkedList<>(playlistBPM_.entrySet()), new Comparator<Map.Entry<String,Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return Integer.compare(o1.getValue(), o2.getValue());
+            }
+
+        });
 
     }
 
