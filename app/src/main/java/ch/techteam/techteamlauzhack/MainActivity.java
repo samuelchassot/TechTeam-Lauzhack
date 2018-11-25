@@ -226,12 +226,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 return headers;
             }
 
-            /*@Override
+            @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("uris", "[\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\", \"spotify:track:1301WleyT98MSxVHPZCA6M\"]");
+                params.put("uris", "[\"spotify:track:6HoqS6yequspDHKXrqw42N\"]");
                 return params;
-            }*/
+            }
         };
 
         queue_.add(putRequest);
