@@ -5,7 +5,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="main_initial_heartrate">--- bpm</string>
-    <string name="main_intial_distance">-.-- km</string>
+    <string name="main_intial_distance">-.-- m</string>
     <string name="home_start">Start</string>
     <string name="main_initial_averagespeed">-.-- km/h</string>
     <string name="main_initial_slope">-.-- %</string>

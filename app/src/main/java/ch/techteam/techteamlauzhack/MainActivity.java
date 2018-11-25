@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         map.removeIf(new Predicate<Map.Entry<String, Double>>() {
             @Override
             public boolean test(Map.Entry<String, Double> stringIntegerEntry) {
-                return stringIntegerEntry.getValue() > min && stringIntegerEntry.getValue() < max;
+                return !(stringIntegerEntry.getValue() > min && stringIntegerEntry.getValue() < max);
             }
         });
 
@@ -552,7 +552,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void updateFields(){
         DecimalFormat numberFormat = new DecimalFormat("#0.00");
-        ((TextView)findViewById(R.id.textview_main_distance)).setText(numberFormat.format(totalDistance) + " km");
+        ((TextView)findViewById(R.id.textview_main_distance)).setText(numberFormat.format(totalDistance) + " m");
         ((TextView)findViewById(R.id.textview_main_slope)).setText(numberFormat.format(slope) + " %");
         ((TextView)findViewById(R.id.textview_main_livespeed)).setText(numberFormat.format(speed) + " km/h");
         ((TextView)findViewById(R.id.textview_main_heartrate)).setText(heartRate + " bpm");
