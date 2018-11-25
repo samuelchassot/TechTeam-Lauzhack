@@ -138,11 +138,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     /**-----------PLAY AND SORT PLAYLISTS-----------*/
 
-    private void playlistWarmup(Map<String, Double> play){
+    private void playlistWarmup(){
         Log.e("PLAYLISTBPM", playlistBPM_.toString());
-        Log.e("PLAYLISTBPM_PLAY", play.toString());
 
-        LinkedList<Map.Entry<String, Double>> map = new LinkedList<> (play.entrySet());
+        LinkedList<Map.Entry<String, Double>> map = new LinkedList<> (playlistBPM_.entrySet());
         Collections.sort(map, new Comparator<Map.Entry<String,Double>>() {
             @Override
             public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
@@ -390,10 +389,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
-    private void retrieveTrackAnalysis(){
-        final HashMap<String, Double> play = new HashMap<>();
+    private void retrieveTrackAnalysis() {
+        playlistBPM_ = new HashMap<>();
         final int[] count = {0};
-        for(final String s : playlist_){
+        for (final String s : playlist_) {
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SPOTIFY_URL + "audio-analysis/" + s, null,
                     new Response.Listener<JSONObject>() {
 
@@ -404,7 +403,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
                                 //addToPlaylistBPM(track.getDouble("tempo"), play);
                                 count[0] += 1;
 
-                                Log.e("TEMPO", "tempo : " + play.putIfAbsent(s, track.getDouble("tempo")) + "s : " + s + " playget : " + play.get(s));
+                                Log.e("TEMPO", "tempo : " + playlistBPM_.putIfAbsent(s, track.getDouble("tempo")) + "s : " + s + " count : " + count[0]);
+
+                                if (count[0] == playlist_.size()) {
+                                    playlistWarmup();
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -420,7 +423,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     })
 
             {
-                /** Passing some request headers* */
+                /**
+                 * Passing some request headers*
+                 */
                 @Override
                 public Map getHeaders() throws AuthFailureError {
                     HashMap headers = new HashMap();
@@ -432,15 +437,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
             // Add the request to the RequestQueue.
             queue_.add(request);
         }
-        
-        Log.e("PLAYLISTBPM_AFTERANALYSIS", play.toString());
-        playlistWarmup(play);
-    }
 
-    private void addToPlaylistBPM(double tempo){
-        playlistBPM_.put(currentS, tempo);
     }
-
 
 
     /**-----------OBSERVABLE-----------*/
