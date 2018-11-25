@@ -251,6 +251,52 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     }
 
+    public void playSong(final String trackURI){
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, SPOTIFY_URL + "me/player/play",
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.e("MAINMONTRUC", "Plays song :" +response.toString());
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.e("MAINMONTRUC", "Cannot play song : " + error.toString());
+                    }
+                }
+        ) {
+
+            /** Passing some request headers* */
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap();
+                //headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    JSONObject jsonObject = new JSONObject("{\"uris\": [\" " + trackURI +  " \"}");
+                    Log.i("json", jsonObject.toString());
+                    return jsonObject.toString().getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+
+        queue_.add(putRequest);
+
+    }
+
     public void stopRunSongs(){
         switch (runningMode_){
             case WALK:
