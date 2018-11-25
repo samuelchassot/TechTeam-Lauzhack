@@ -58,12 +58,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private double distance_;
     private RequestQueue queue_;
     private List<String> playlist_;
-    private Map<String, Double> playlistBPM_;
+    private Map<String, Double> playlistBPM_ = new HashMap<>();
     private JSONObject jsonPlaylist_;
     private MockData mockdata;
 
     private Date startingTime_;
     private Timer timer_;
+
+    private String currentS;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,9 +138,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     /**-----------PLAY AND SORT PLAYLISTS-----------*/
 
-    private void playlistWarmup(){
+    private void playlistWarmup(Map<String, Double> play){
+        Log.e("PLAYLISTBPM", playlistBPM_.toString());
+        Log.e("PLAYLISTBPM_PLAY", play.toString());
 
-        LinkedList<Map.Entry<String, Double>> map = new LinkedList<> (playlistBPM_.entrySet());
+        LinkedList<Map.Entry<String, Double>> map = new LinkedList<> (play.entrySet());
         Collections.sort(map, new Comparator<Map.Entry<String,Double>>() {
             @Override
             public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
@@ -206,6 +210,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     //TODO !!!!!!!!!!!
     private void playSong(List<Map.Entry<String, Double>> songsID){
+        String jsonUris = "{\"uris\":[";
+        for(Map.Entry<String, Double> e : songsID){
+            jsonUris += "\"spotify:track:" + e.getKey() +"\",";
+        }
+
+        jsonUris = jsonUris.substring(0, jsonUris.length() -1) + "]}";
+
+        final String jsonUrisFinal = jsonUris;
+
         StringRequest putRequest = new StringRequest(Request.Method.PUT, SPOTIFY_URL + "me/player/play",
                 new Response.Listener<String>(){
                     @Override
@@ -235,12 +248,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
             @Override
             public byte[] getBody(){
                 try {
-                    JSONObject jsonObject = new JSONObject("{\"uris\": [\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\", \"spotify:track:1301WleyT98MSxVHPZCA6M\"]}");
-                    Log.i("json", jsonObject.toString());
+                    JSONObject jsonObject = new JSONObject(jsonUrisFinal);
+                    Log.e("BODYJSON", jsonObject.toString());
                     return jsonObject.toString().getBytes("UTF-8");
                 } catch (UnsupportedEncodingException e) {
+                    Log.e("BODYJSON", "PROBLEM 1");
                     e.printStackTrace();
                 } catch (JSONException e) {
+                    Log.e("BODYJSON", "PROBLEM 2 : ");
                     e.printStackTrace();
                 }
                 return null;
@@ -367,7 +382,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
             for(int i = 0 ; i < array.length() ; i++){
                 JSONObject track = array.getJSONObject(i).getJSONObject("track");
                 playlist_.add(track.get("id").toString());
-                Log.e("IDTRACK", track.get("id").toString());
             }
             retrieveTrackAnalysis();
 
@@ -377,7 +391,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void retrieveTrackAnalysis(){
-        playlistBPM_ = new HashMap<>();
+        final HashMap<String, Double> play = new HashMap<>();
+        final int[] count = {0};
         for(final String s : playlist_){
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SPOTIFY_URL + "audio-analysis/" + s, null,
                     new Response.Listener<JSONObject>() {
@@ -386,8 +401,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
                         public void onResponse(JSONObject response) {
                             try {
                                 JSONObject track = response.getJSONObject("track");
-                                playlistBPM_.put(s, track.getDouble("tempo"));
-                                //Log.e("TEMPO", "tempo : " + track.getDouble("tempo"));
+                                //addToPlaylistBPM(track.getDouble("tempo"), play);
+                                count[0] += 1;
+
+                                Log.e("TEMPO", "tempo : " + play.putIfAbsent(s, track.getDouble("tempo")) + "s : " + s + " playget : " + play.get(s));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -415,8 +432,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
             // Add the request to the RequestQueue.
             queue_.add(request);
         }
+        
+        Log.e("PLAYLISTBPM_AFTERANALYSIS", play.toString());
+        playlistWarmup(play);
+    }
 
-        playlistWarmup();
+    private void addToPlaylistBPM(double tempo){
+        playlistBPM_.put(currentS, tempo);
     }
 
 
