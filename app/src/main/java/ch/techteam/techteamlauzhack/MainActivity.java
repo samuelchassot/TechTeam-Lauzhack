@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -246,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     //TODO !!!!!!!!!!!
     private void playSong(List<Map.Entry<String, Double>> songsID){
+        displaySong();
         String jsonUris = "{\"uris\":[";
         for(Map.Entry<String, Double> e : songsID){
             jsonUris += "\"spotify:track:" + e.getKey() +"\",";
@@ -302,6 +304,46 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     }
 
+    private void displaySong(){
+        // Request a string response from the provided URL.
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, "https://api.spotify.com/v1/me/player", null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("MAIN", "Received music");
+                        TextView t = findViewById(R.id.textView_main_spotify);
+                        t.setText("Put your music here");
+
+                    }
+                },
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("MAIN", "Cannot retrieve music");
+                        TextView t = findViewById(R.id.textView_main_spotify);
+                        t.setText("No music found");
+
+                    }
+                })
+
+        {
+            /**
+             * Passing some request headers*
+             */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
+                return headers;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        queue_.add(req);
+    }
+
     public void playSong(final String trackURI){
         StringRequest putRequest = new StringRequest(Request.Method.PUT, SPOTIFY_URL + "me/player/play",
                 new Response.Listener<String>(){
@@ -345,6 +387,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         };
 
         queue_.add(putRequest);
+        // Add the request to the RequestQueue.
 
     }
 
@@ -365,6 +408,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 Log.e("MAINACTIVITY", "NO RUNNING MODE");
         }
     }
+
 
     private void stopSong(){
         StringRequest putRequest = new StringRequest(Request.Method.PUT, SPOTIFY_URL + "me/player/pause",
