@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         mockdata = new MockData(this);
         mockdata.addObserver(this);
-        mockdata.run();
 
     }
 
@@ -129,12 +128,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 timer_.cancel();
                 stateMode_ = StateMode.RUN;
                 ((Button)v.findViewById(R.id.button_main)).setText("End run");
+                stopSong();
                 playlistDependingOnRunningMode();
                 break;
             case RUN:
                 timer_.cancel();
                 stateMode_ = StateMode.RECOVERY;
                 ((Button)v.findViewById(R.id.button_main)).setText("End recovery");
+                stopSong();
                 playlistRecovery();
                 break;
             case RECOVERY:
@@ -162,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         });
 
         timer_.schedule(new NextModeTimer(), 45000);
+        mockdata.run();
         playSong(map);
 
     }
@@ -523,18 +525,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void update(HeartStage h, Object arg){
-        if(stateMode_ == StateMode.RUN) {
-            HeartStage.Stage curr = h.getCurrentStage();
-            if (curr == HeartStage.Stage.High) {
-                playlistBounded(170, Integer.MAX_VALUE);
-            }
-            if (curr == HeartStage.Stage.Middle) {
-                playlistBounded(130, 170);
-            }
-            if (curr == HeartStage.Stage.Low) {
-                playlistBounded(110, 150);
-            }
-        }   
+        HeartStage.Stage curr = h.getCurrentStage();
+        if(curr == HeartStage.Stage.High){
+            playlistBounded(170, Integer.MAX_VALUE);
+        }
+        if(curr == HeartStage.Stage.Middle){
+            playlistBounded(130, 170);
+        }
+        if(curr == HeartStage.Stage.Low){
+            playlistBounded(110,150);
+        }
     }
 
     @Override
