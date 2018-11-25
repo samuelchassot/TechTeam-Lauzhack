@@ -17,6 +17,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Track;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -310,43 +313,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void displaySong(){
-        // Request a string response from the provided URL.
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, "https://api.spotify.com/v1/me/player", null,
-                new Response.Listener<JSONObject>() {
-
+        final TextView songDisplay = findViewById(R.id.textView_main_spotify);
+        SpotifySingleton.get().getSpotifyAppRemote_().getPlayerApi().subscribeToPlayerState()
+                .setEventCallback(new Subscription.EventCallback<PlayerState>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Log.e("MAIN", "Received music");
-                        TextView t = findViewById(R.id.textView_main_spotify);
-                        t.setText("Put your music here");
-
+                    public void onEvent(PlayerState playerState) {
+                        final Track track = playerState.track;
+                        if (track != null) {
+                            songDisplay.setText(track.name + " by " + track.artist.name);
+                        }
                     }
-                },
-                new Response.ErrorListener() {
+                });
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("MAIN", "Cannot retrieve music");
-                        TextView t = findViewById(R.id.textView_main_spotify);
-                        t.setText("No music found");
 
-                    }
-                })
-
-        {
-            /**
-             * Passing some request headers*
-             */
-            @Override
-            public Map getHeaders() throws AuthFailureError {
-                HashMap headers = new HashMap();
-                headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
-                return headers;
-            }
-        };
-
-        // Add the request to the RequestQueue.
-        queue_.add(req);
     }
 
     public void playSong(final String trackURI){
