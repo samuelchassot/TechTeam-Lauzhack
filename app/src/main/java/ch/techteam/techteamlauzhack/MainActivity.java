@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private Map<String, Integer> playlistBPM_;
     private JSONObject jsonPlaylist_;
     private MockData mockdata;
+
+    private Date startingTime_;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,22 +98,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (stateMode_){
-                    case WARMUP:
-                        stateMode_ = StateMode.RUN;
-                        ((Button)v.findViewById(R.id.button_main)).setText("End run");
-                        playlistDependingOnRunningMode();
-                        break;
-                    case RUN:
-                        stateMode_ = StateMode.RECOVERY;
-                        ((Button)v.findViewById(R.id.button_main)).setText("End recovery");
-                        playlistRecovery();
-                        break;
-                    case RECOVERY:
-                        Intent homeIntent = new Intent(v.getContext(), HomeActivity.class);
-                        startActivity(homeIntent);
-                        break;
-                }
+                goToNextMode(v);
             }
         });
 
@@ -125,6 +113,26 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         playlistWarmup();
 
+    }
+
+    private void goToNextMode(View v){
+        switch (stateMode_){
+            case WARMUP:
+                stateMode_ = StateMode.RUN;
+                ((Button)v.findViewById(R.id.button_main)).setText("End run");
+                startingTime_ = new Date();
+                playlistDependingOnRunningMode();
+                break;
+            case RUN:
+                stateMode_ = StateMode.RECOVERY;
+                ((Button)v.findViewById(R.id.button_main)).setText("End recovery");
+                playlistRecovery();
+                break;
+            case RECOVERY:
+                Intent homeIntent = new Intent(v.getContext(), HomeActivity.class);
+                startActivity(homeIntent);
+                break;
+        }
     }
 
     private void playlistRecovery(){
