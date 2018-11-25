@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.function.Predicate;
 
 
 public class MainActivity extends AppCompatActivity implements Observer {
@@ -127,7 +128,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void playlistRecovery(){
-        Collections.sort(new LinkedList<>(playlistBPM_.entrySet()), new Comparator<Map.Entry<String,Integer>>() {
+        LinkedList<Map.Entry<String, Integer>> map = new LinkedList<Map.Entry<String, Integer>> (playlistBPM_.entrySet());
+
+        map.removeIf(new Predicate<Map.Entry<String, Integer>>() {
+            @Override
+            public boolean test(Map.Entry<String, Integer> stringIntegerEntry) {
+                return stringIntegerEntry.getValue() > 120;
+            }
+        });
+
+        Collections.sort(map
+                , new Comparator<Map.Entry<String,Integer>>() {
             @Override
             public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
                 return Integer.compare(o2.getValue(), o1.getValue());
