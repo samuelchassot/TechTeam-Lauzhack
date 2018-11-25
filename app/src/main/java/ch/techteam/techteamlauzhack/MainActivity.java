@@ -534,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             if (curr == HeartStage.Stage.Low) {
                 playlistBounded(110, 150);
             }
-        }   
+        }
     }
 
     @Override
