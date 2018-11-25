@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -106,6 +107,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 }
             }
         });
+
+        getSupportActionBar().hide();
+
+
 
 
         mockdata = new MockData(this);

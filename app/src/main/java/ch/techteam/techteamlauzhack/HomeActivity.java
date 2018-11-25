@@ -23,6 +23,7 @@ public class HomeActivity extends AppCompatActivity {
         home_adapter = new HomeAdapter(getSupportFragmentManager());
         home_view_pager = (ViewPager) findViewById(R.id.viewPager_home_run_types);
         home_view_pager.setAdapter(home_adapter);
+        getSupportActionBar().hide();
     }
 
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#999999"
+    android:background="#555555"
     tools:context=".MainActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -24,9 +24,12 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/main_initial_heartrate"
-            app:layout_constraintBottom_toTopOf="@+id/textview_main_livespeed"
             android:gravity="center"
+            android:text="@string/main_initial_heartrate"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textview_main_livespeed"
             app:layout_constraintEnd_toStartOf="@+id/textview_main_distance"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,8 +43,11 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/main_intial_distance"
             android:gravity="center"
+            android:text="@string/main_intial_distance"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="30sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textview_main_slope"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -55,8 +61,11 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/main_initial_averagespeed"
             android:gravity="center"
+            android:text="@string/main_initial_averagespeed"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="30sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textView_main_spotify"
             app:layout_constraintEnd_toStartOf="@+id/textview_main_slope"
             app:layout_constraintHorizontal_bias="0.5"
@@ -74,6 +83,9 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="@string/main_initial_slope"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="30sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textView_main_spotify"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -103,5 +115,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_main_spotify" />
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
