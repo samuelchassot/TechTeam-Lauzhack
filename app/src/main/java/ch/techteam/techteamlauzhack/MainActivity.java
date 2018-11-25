@@ -197,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             case INTERVAL:
                 timer_ = new Timer();
                 intervalMode_ = IntervalMode.FAST;
+                timer_.schedule(new SlowIntervalTimer(), 180000);
                 timer_.schedule(new FastIntervalTimer(), 0, fastIntervalTime_+slowIntervalTime_);
                 timer_.schedule(new SlowIntervalTimer(), fastIntervalTime_, fastIntervalTime_+slowIntervalTime_);
                 break;
