@@ -523,16 +523,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void update(HeartStage h, Object arg){
-        HeartStage.Stage curr = h.getCurrentStage();
-        if(curr == HeartStage.Stage.High){
-            playlistBounded(170, Integer.MAX_VALUE);
-        }
-        if(curr == HeartStage.Stage.Middle){
-            playlistBounded(130, 170);
-        }
-        if(curr == HeartStage.Stage.Low){
-            playlistBounded(110,150);
-        }
+        if(stateMode_ == StateMode.RUN) {
+            HeartStage.Stage curr = h.getCurrentStage();
+            if (curr == HeartStage.Stage.High) {
+                playlistBounded(170, Integer.MAX_VALUE);
+            }
+            if (curr == HeartStage.Stage.Middle) {
+                playlistBounded(130, 170);
+            }
+            if (curr == HeartStage.Stage.Low) {
+                playlistBounded(110, 150);
+            }
+        }   
     }
 
     @Override
