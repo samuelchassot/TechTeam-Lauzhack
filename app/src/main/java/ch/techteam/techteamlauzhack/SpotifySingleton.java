@@ -13,18 +13,18 @@ public class SpotifySingleton {
         accessToken_ = null;
     }
 
-    /*public static void putAppRemote(SpotifyAppRemote spotifyAppRemote) {
+    public static void putAppRemote(SpotifyAppRemote spotifyAppRemote) {
         if (instance_ == null) {
             instance_ = new SpotifySingleton();
         }
         instance_.spotifyAppRemote_ = spotifyAppRemote;
 
-    }*/
+    }
 
 
-    /*public SpotifyAppRemote getSpotifyAppRemote_() {
+    public SpotifyAppRemote getSpotifyAppRemote_() {
         return spotifyAppRemote_;
-    }*/
+    }
 
     public static SpotifySingleton get() {
         if (instance_ == null) {

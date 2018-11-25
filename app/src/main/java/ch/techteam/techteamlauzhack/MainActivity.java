@@ -165,6 +165,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         timer_.schedule(new NextModeTimer(), 45000);
         mockdata.run();
         update(heartStage, null);
+        SpotifySingleton.get().getSpotifyAppRemote_().getPlayerApi().play("spotify:user:spotify:playlist:0tWjZRwhX09MRKWBMAr5Zq");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         playSong(map);
 
     }

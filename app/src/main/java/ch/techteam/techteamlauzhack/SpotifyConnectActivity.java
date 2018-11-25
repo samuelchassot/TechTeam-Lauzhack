@@ -108,6 +108,30 @@ public class SpotifyConnectActivity extends AppCompatActivity {
                     // Handle other cases
             }
         }
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+
+        SpotifyAppRemote.connect(this, connectionParams,
+                new Connector.ConnectionListener() {
+
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        SpotifySingleton.putAppRemote(spotifyAppRemote);
+                        Log.d("SpotifyConnectActivity", "Connected! Yay!");
+
+                        // Now you can start interacting with App Remote
+                        connected();
+
+                    }
+
+                    public void onFailure(Throwable throwable) {
+                        Log.e("SpotifyConnectActivity", throwable.getMessage(), throwable);
+
+                        // Something went wrong when attempting to connect! Handle errors here
+                    }
+                });
     }
 
 }
