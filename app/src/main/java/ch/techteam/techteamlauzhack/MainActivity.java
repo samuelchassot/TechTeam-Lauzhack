@@ -75,15 +75,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         switch (runningMode_){
             case RUN_TIME:
                 time_ = intent.getIntExtra("time", 1800);
-                timer_.schedule(new StopRunPlayer(),time_*1000);
                 break;
             case RUN_DISTANCE:
                 distance_ = intent.getDoubleExtra("distance", 5.0);
-                timer_.schedule(new CheckDistanceTimer(),10000);
                 break;
             case WALK:
                 time_ = intent.getIntExtra("time", 1800);
-                timer_.schedule(new StopRunPlayer(),time_*1000);
                 break;
             case INTERVAL:
                 slowIntervalTime_ = intent.getIntExtra("slowIntervalTime", 240);
@@ -156,13 +153,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private void playlistDependingOnRunningMode(){
         switch (runningMode_){
             case WALK:
+                timer_.schedule(new StopRunPlayer(),time_*1000);
                 break;
             case RUN_DISTANCE:
+                timer_.schedule(new CheckDistanceTimer(),10000);
                 break;
             case RUN_TIME:
+                timer_.schedule(new StopRunPlayer(),time_*1000);
                 break;
             case INTERVAL:
                 intervalMode_ = IntervalMode.FAST;
+                timer_.schedule(new FastIntervalTimer(), 0, fastIntervalTime_+slowIntervalTime_);
+                timer_.schedule(new SlowIntervalTimer(), fastIntervalTime_, fastIntervalTime_+slowIntervalTime_);
                 break;
             default:
                 Log.e("MAINACTIVITY", "NO RUNNING MODE");
