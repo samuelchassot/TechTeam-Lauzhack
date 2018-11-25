@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private Date startingTime_;
     private Timer timer_;
 
-    private String currentS;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         Intent intent = getIntent();
         runningMode_ = (RunningMode) intent.getSerializableExtra("mode");
+
+        timer_ = new Timer();
 
         switch (runningMode_){
             case RUN_TIME:
@@ -113,12 +114,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     }
 
+    private void goToNextMode(){
+        goToNextMode(this.getWindow().getDecorView());
+    }
+
     private void goToNextMode(View v){
         switch (stateMode_){
             case WARMUP:
+                timer_.cancel();
                 stateMode_ = StateMode.RUN;
                 ((Button)v.findViewById(R.id.button_main)).setText("End run");
-                timer_ = new Timer();
                 playlistDependingOnRunningMode();
                 break;
             case RUN:
@@ -128,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 playlistRecovery();
                 break;
             case RECOVERY:
+                timer_.cancel();
                 stopSong();
                 Intent homeIntent = new Intent(v.getContext(), HomeActivity.class);
                 startActivity(homeIntent);
@@ -150,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         });
 
+        timer_.schedule(new NextModeTimer(), 45000);
         playSong(map);
 
     }
@@ -157,15 +164,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private void playlistDependingOnRunningMode(){
         switch (runningMode_){
             case WALK:
+                timer_ = new Timer();
                 timer_.schedule(new StopRunPlayer(),time_*1000);
                 break;
             case RUN_DISTANCE:
+                timer_ = new Timer();
                 timer_.schedule(new CheckDistanceTimer(),10000);
                 break;
             case RUN_TIME:
+                timer_ = new Timer();
                 timer_.schedule(new StopRunPlayer(),time_*1000);
                 break;
             case INTERVAL:
+                timer_ = new Timer();
                 intervalMode_ = IntervalMode.FAST;
                 timer_.schedule(new FastIntervalTimer(), 0, fastIntervalTime_+slowIntervalTime_);
                 timer_.schedule(new SlowIntervalTimer(), fastIntervalTime_, fastIntervalTime_+slowIntervalTime_);
@@ -181,6 +192,28 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void playlistIntervalSlow(){
 
+    }
+
+    private void playlistBounded(final int min, final int max){
+        LinkedList<Map.Entry<String, Double>> map = new LinkedList<> (playlistBPM_.entrySet());
+
+        map.removeIf(new Predicate<Map.Entry<String, Double>>() {
+            @Override
+            public boolean test(Map.Entry<String, Double> stringIntegerEntry) {
+                return stringIntegerEntry.getValue() > min && stringIntegerEntry.getValue() < max;
+            }
+        });
+
+        Collections.sort(map
+                , new Comparator<Map.Entry<String,Double>>() {
+                    @Override
+                    public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+                        return Double.compare(o2.getValue(), o1.getValue());
+                    }
+
+                });
+
+        playSong(map);
     }
 
     private void playlistRecovery(){
@@ -202,6 +235,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
                 });
 
+        timer_ = new Timer();
+        timer_.schedule(new NextModeTimer(), 45000);
         playSong(map);
     }
 
@@ -502,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private class CheckDistanceTimer extends TimerTask {
         @Override
         public void run() {
-            if(distance_ == totalDistance){
+            if(distance_ <= totalDistance){
                 stopRunSongs();}
         }
     }
@@ -518,6 +553,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
         @Override
         public void run() {
             playlistIntervalFast();
+        }
+    }
+
+    private class NextModeTimer extends TimerTask {
+        @Override
+        public void run() {
+            goToNextMode();
         }
     }
 }

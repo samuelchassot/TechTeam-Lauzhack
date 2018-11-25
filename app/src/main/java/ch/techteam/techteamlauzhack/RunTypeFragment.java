@@ -16,7 +16,7 @@ public class RunTypeFragment extends Fragment {
     private int position;
     private RunningMode mode;
     private Intent intent;
-    private int time = 1800;
+    private int time = 180;
     private double distance = 5.0;
     private int slowIntervalTime = 240;
     private int fastIntervalTime = 600;
