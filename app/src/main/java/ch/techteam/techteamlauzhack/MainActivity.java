@@ -530,7 +530,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             playlistBounded(130, 170);
         }
         if(curr == HeartStage.Stage.Low){
-            playlistBoundef(110,150);
+            playlistBounded(110,150);
         }
     }
 
