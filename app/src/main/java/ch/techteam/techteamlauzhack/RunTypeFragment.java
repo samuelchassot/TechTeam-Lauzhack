@@ -64,6 +64,9 @@ public class RunTypeFragment extends Fragment {
                         intent.putExtra("fastIntervalTime", fastIntervalTime);
                         break;
                 }
+                intent.putExtra("mode", mode);
+                startActivity(intent);
+
             }
         });
 
