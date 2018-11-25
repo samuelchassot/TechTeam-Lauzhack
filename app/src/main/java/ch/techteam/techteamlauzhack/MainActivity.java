@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Predicate;
 
 
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private StateMode stateMode_;
     private RunningMode runningMode_;
+    private IntervalMode intervalMode_;
 
     private int heartRate;
     private double totalDistance;
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private MockData mockdata;
 
     private Date startingTime_;
+    private Timer timer_;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,12 +75,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
         switch (runningMode_){
             case RUN_TIME:
                 time_ = intent.getIntExtra("time", 1800);
+                timer_.schedule(new StopRunPlayer(),time_*1000);
                 break;
             case RUN_DISTANCE:
                 distance_ = intent.getDoubleExtra("distance", 5.0);
+                timer_.schedule(new CheckDistanceTimer(),10000);
                 break;
             case WALK:
                 time_ = intent.getIntExtra("time", 1800);
+                timer_.schedule(new StopRunPlayer(),time_*1000);
                 break;
             case INTERVAL:
                 slowIntervalTime_ = intent.getIntExtra("slowIntervalTime", 240);
@@ -104,8 +111,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         mockdata.addObserver(this);
         mockdata.run();
 
-        //playlistWarmup();
-
     }
 
     private void goToNextMode(View v){
@@ -113,15 +118,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
             case WARMUP:
                 stateMode_ = StateMode.RUN;
                 ((Button)v.findViewById(R.id.button_main)).setText("End run");
-                startingTime_ = new Date();
+                timer_ = new Timer();
                 playlistDependingOnRunningMode();
                 break;
             case RUN:
+                timer_.cancel();
                 stateMode_ = StateMode.RECOVERY;
                 ((Button)v.findViewById(R.id.button_main)).setText("End recovery");
                 playlistRecovery();
                 break;
             case RECOVERY:
+                stopSong();
                 Intent homeIntent = new Intent(v.getContext(), HomeActivity.class);
                 startActivity(homeIntent);
                 break;
@@ -155,10 +162,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
             case RUN_TIME:
                 break;
             case INTERVAL:
+                intervalMode_ = IntervalMode.FAST;
                 break;
             default:
                 Log.e("MAINACTIVITY", "NO RUNNING MODE");
         }
+    }
+
+    private void playlistIntervalFast(){
+
+    }
+
+    private void playlistIntervalSlow(){
+
     }
 
     private void playlistRecovery(){
@@ -183,6 +199,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         playSong(map);
     }
 
+    /**-----------CONTROL PLAYER-----------*/
+
+    //TODO !!!!!!!!!!!
     private void playSong(List<Map.Entry<String, Double>> songsID){
         StringRequest putRequest = new StringRequest(Request.Method.PUT, SPOTIFY_URL + "me/player/play",
                 new Response.Listener<String>(){
@@ -220,6 +239,30 @@ public class MainActivity extends AppCompatActivity implements Observer {
         queue_.add(putRequest);
 
     }
+
+    public void stopRunSongs(){
+        switch (runningMode_){
+            case WALK:
+                goToNextMode(this.getWindow().getDecorView());
+                break;
+            case RUN_DISTANCE:
+                goToNextMode(this.getWindow().getDecorView());
+                break;
+            case RUN_TIME:
+                goToNextMode(this.getWindow().getDecorView());
+                break;
+            case INTERVAL:
+                break;
+            default:
+                Log.e("MAINACTIVITY", "NO RUNNING MODE");
+        }
+    }
+
+    private void stopSong(){
+
+    }
+
+
 
 
     /**-----------REQUEST PLAYLIST AND PARSING-----------*/
@@ -341,5 +384,36 @@ public class MainActivity extends AppCompatActivity implements Observer {
         ((TextView)findViewById(R.id.textview_main_slope)).setText(numberFormat.format(slope) + " %");
         ((TextView)findViewById(R.id.textview_main_livespeed)).setText(numberFormat.format(speed) + " km/h");
         ((TextView)findViewById(R.id.textview_main_heartrate)).setText(heartRate + " bpm");
+    }
+
+    /**-----------TIMERS-----------*/
+
+    private class StopRunPlayer extends TimerTask {
+        @Override
+        public void run() {
+            stopRunSongs();
+        }
+    }
+
+    private class CheckDistanceTimer extends TimerTask {
+        @Override
+        public void run() {
+            if(distance_ == totalDistance){
+                stopRunSongs();}
+        }
+    }
+
+    private class FastIntervalTimer extends TimerTask {
+        @Override
+        public void run() {
+            playlistIntervalSlow();
+        }
+    }
+
+    private class SlowIntervalTimer extends TimerTask {
+        @Override
+        public void run() {
+            playlistIntervalFast();
+        }
     }
 }
