@@ -330,6 +330,35 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void stopSong(){
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, SPOTIFY_URL + "me/player/pause",
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.e("MAINMONTRUC", "PAUSE");
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.e("MAINMONTRUC", "Cannot pause");
+                    }
+                }
+        ) {
+
+            /** Passing some request headers* */
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap();
+                //headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + SpotifySingleton.get().getAccessToken());
+                return headers;
+            }
+
+        };
+
+        queue_.add(putRequest);
 
     }
 
